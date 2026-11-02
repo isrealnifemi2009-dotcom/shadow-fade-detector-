@@ -1,0 +1,12 @@
+{
+  "name": "shadow-fade-detector",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Private WhatsApp and Telegram restriction-notice checker",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "dependencies": {
+    "express": "^5.1.0",
+    "express-session": "^1.18.2"
+  }
+}

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#09090b">
+<title>SHADOW FADE DETECTOR</title>
+<style>
+:root{--bg:#08080b;--panel:#111116;--panel2:#17171e;--red:#d7193f;--red2:#ff3157;--muted:#a5a0aa;--line:#30202a;--white:#f7f3f5}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--white);font-family:Inter,ui-sans-serif,system-ui,Arial;background:radial-gradient(ellipse at 50% -20%,#45101e 0,transparent 45%),radial-gradient(circle at 90% 70%,#250b16 0,transparent 30%),var(--bg)}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;background-image:linear-gradient(transparent 97%,#ff31571a 100%),linear-gradient(90deg,transparent 97%,#ff31571a 100%);background-size:38px 38px}
+.wrap{position:relative;max-width:980px;margin:auto;padding:28px 18px 60px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:12px;letter-spacing:.24em;color:#ff8298;font-weight:800}.pill{border:1px solid #672033;border-radius:999px;padding:7px 11px;color:#ff9caf;font-size:11px;letter-spacing:.12em}
+.hero{text-align:center;padding:55px 0 30px}.sigil{width:66px;height:66px;margin:0 auto 18px;border:1px solid #8e1834;border-radius:20px;display:grid;place-items:center;color:#ff4569;font-size:31px;box-shadow:0 0 35px #c4143b38,inset 0 0 22px #c4143b20;transform:rotate(-4deg)}
+h1{font-size:clamp(29px,6vw,54px);letter-spacing:.055em;line-height:1.05;margin:0;text-shadow:0 0 25px #e51d4933}h1 span{color:var(--red2)}.sub{color:var(--muted);max-width:590px;margin:15px auto 0;line-height:1.65;font-size:14px}
+.panel{background:linear-gradient(145deg,#15141aee,#0e0e13f5);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 18px 70px #0008}.login{max-width:430px;margin:0 auto}.panel h2{font-size:16px;letter-spacing:.12em;margin:0 0 17px}
+label{display:block;color:#d7cbd0;font-size:12px;font-weight:700;letter-spacing:.08em;margin:15px 0 8px}input,select,textarea{width:100%;background:#09090d;border:1px solid #3b2931;color:white;border-radius:10px;padding:13px 14px;font:inherit;outline:none}textarea{min-height:130px;resize:vertical;line-height:1.5}input:focus,select:focus,textarea:focus{border-color:#e52b50;box-shadow:0 0 0 3px #e52b501c}
+button{border:0;border-radius:10px;padding:13px 17px;font-weight:800;letter-spacing:.08em;cursor:pointer;color:white;background:linear-gradient(100deg,#a90e30,#ed234d);box-shadow:0 7px 25px #d7193f30}button:hover{filter:brightness(1.12)}button.secondary{background:#21151b;border:1px solid #59303b;box-shadow:none;color:#ffc0cd}.full{width:100%;margin-top:18px}.error{color:#ff8ca1;font-size:13px;margin-top:12px;min-height:18px}.hidden{display:none!important}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin:18px 0}.platform{border:1px solid #39242d;background:#121117;border-radius:14px;padding:17px}.platform strong{display:block;font-size:14px;letter-spacing:.08em}.platform small{display:block;color:var(--muted);margin-top:7px;line-height:1.5}.platform .mark{color:#ff5273;font-size:21px;margin-bottom:9px}
+.note{font-size:12px;color:#aaa1aa;line-height:1.6;border-left:2px solid #a91c3c;padding:10px 13px;background:#190e13;border-radius:0 8px 8px 0;margin-top:17px}
+.actions{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:18px}.actions button{flex:1}.result{margin-top:20px;padding:22px;border-radius:15px;background:#0b0b10;border:1px solid #542331;animation:rise .35s ease}.result .eyebrow{font-size:10px;letter-spacing:.2em;color:#ff8da3}.result h3{font-size:clamp(25px,5vw,38px);margin:8px 0;color:#ff456b;letter-spacing:.04em}.result p{color:#d2c8ce;line-height:1.6;margin:8px 0}.result .meta{color:#8e8790;font-size:11px;margin-top:15px}
+.status{display:inline-block;padding:6px 9px;border:1px solid #663044;border-radius:999px;color:#ff9caf;font-size:10px;letter-spacing:.12em}
+footer{text-align:center;color:#766d76;font-size:11px;letter-spacing:.12em;margin-top:35px;line-height:1.8}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:620px){.grid{grid-template-columns:1fr}.hero{padding-top:42px}.panel{padding:18px}.top{align-items:flex-start}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div class="brand">SHADOWS EMPIRE</div><div class="pill">PRIVATE ACCESS</div></div>
+  <header class="hero">
+    <div class="sigil">☠</div>
+    <h1>SHADOW <span>FADE</span><br>DETECTOR</h1>
+    <p class="sub">A private account-status desk for WhatsApp and Telegram. Read the platform's own notice. Separate confirmed wording from uncertainty. No false verdicts.</p>
+  </header>
+
+  <section id="login" class="panel login">
+    <h2>ENTER THE SHADOWS</h2>
+    <p class="sub" style="text-align:left;margin:0">This checker is private. Enter the access password supplied by the site owner.</p>
+    <form id="loginForm">
+      <label for="password">ACCESS PASSWORD</label>
+      <input id="password" type="password" autocomplete="current-password" required placeholder="Enter private password">
+      <button class="full" type="submit">UNLOCK ACCESS</button>
+      <div id="loginError" class="error"></div>
+    </form>
+  </section>
+
+  <main id="app" class="hidden">
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h2>ACCOUNT STATUS SCAN</h2><button id="logout" class="secondary" type="button" style="padding:8px 11px;font-size:10px">LOCK</button></div>
+      <div class="grid">
+        <div class="platform"><div class="mark">◉</div><strong>WHATSAPP</strong><small>Review an official in-app notice or account-support response.</small></div>
+        <div class="platform"><div class="mark">➤</div><strong>TELEGRAM</strong><small>Review an official in-app notice or Telegram support response.</small></div>
+      </div>
+      <form id="checkForm">
+        <label for="platform">SELECT PLATFORM</label>
+        <select id="platform"><option>WhatsApp</option><option>Telegram</option></select>
+        <label for="evidence">OFFICIAL NOTICE / ERROR MESSAGE</label>
+        <textarea id="evidence" maxlength="5000" placeholder="Paste the exact wording shown by the app or its official support channel. Do not paste passwords, verification codes, or private messages."></textarea>
+        <label for="accountStatus">IF THERE IS NO BAN NOTICE</label>
+        <select id="accountStatus"><option value="unknown">I cannot confirm the account is active</option><option value="active">The account is working normally / official status says active</option></select>
+        <button class="full" type="submit">ANALYSE STATUS</button>
+      </form>
+      <div class="note"><b>Important:</b> This tool analyses the notice you provide. It does not connect to WhatsApp or Telegram, look up phone numbers/usernames, or independently verify an account. An error from a bot, group, or API may describe only that specific action—not an account-wide ban.</div>
+      <div id="result" class="result hidden" aria-live="polite"></div>
+    </div>
+  </main>
+  <footer>THE SHADOWS NEVER FADE<br>SHADOW FADE DETECTOR · PRIVATE ACCESS</footer>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+async function api(url, body) {
+  const response = await fetch(url, {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+  const data = await response.json().catch(()=>({error:"Unexpected server response."}));
+  if (!response.ok) throw new Error(data.error || "Request failed.");
+  return data;
+}
+function showApp(yes){$("login").classList.toggle("hidden",yes);$("app").classList.toggle("hidden",!yes);}
+async function checkSession(){
+  try {const r=await fetch("/api/session");const d=await r.json();showApp(d.authenticated);}
+  catch {showApp(false);}
+}
+$("loginForm").addEventListener("submit",async e=>{
+  e.preventDefault();$("loginError").textContent="";
+  try{await api("/api/login",{password:$("password").value});$("password").value="";showApp(true);}
+  catch(err){$("loginError").textContent=err.message;}
+});
+$("logout").addEventListener("click",async()=>{try{await api("/api/logout",{});}finally{showApp(false);$("result").classList.add("hidden");}});
+$("checkForm").addEventListener("submit",async e=>{
+  e.preventDefault();const box=$("result");box.classList.remove("hidden");box.innerHTML="<div class='eyebrow'>READING THE SIGNAL</div><p>Analysing the supplied wording…</p>";
+  try{
+    const d=await api("/api/check",{platform:$("platform").value,evidence:$("evidence").value,accountStatus:$("accountStatus").value});
+    const labels={TEMPORARY:"TEMPORARY RESTRICTION",PERMANENT:"PERMANENT RESTRICTION",NO_RESTRICTION_REPORTED:"NO RESTRICTION REPORTED",INCONCLUSIVE:"STATUS UNCONFIRMED"};
+    box.innerHTML=`<div class="eyebrow">${d.platform.toUpperCase()} · ${labels[d.result]}</div><h3>${d.title}</h3><p>${d.detail}</p><span class="status">${d.result.replaceAll("_"," ")}</span><div class="meta">BASIS: ${d.basis} · ${new Date(d.checkedAt).toLocaleString()}</div>`;
+  }catch(err){box.innerHTML=`<div class="eyebrow">CHECK NOT COMPLETED</div><p>${err.message}</p>`;}
+});
+checkSession();
+</script>
+</body>
+</html>
