@@ -3,7 +3,7 @@
 Private WhatsApp and Telegram notice analyser with a black + blood-red interface.
 
 ## Important limitation
-This is **not** a live platform ban lookup. WhatsApp and Telegram do not provide a public endpoint that lets an arbitrary website reliably check the complete ban status of any phone number or username. The app analyses exact wording from an official notice that the user supplies. It reports temporary/permanent only when the text explicitly says so. Otherwise it returns an inconclusive result. “Shadows Untouched” is shown only when the user says the account is working normally; it is not independent verification.
+This is **not** a live platform ban lookup. WhatsApp and Telegram do not provide a public endpoint that lets an arbitrary website reliably check the complete ban status of any phone number or username. The app asks for a phone number and platform, but the number is only used as a reference and is masked in the result. It is not sent to WhatsApp or Telegram and is not used for a live lookup. The app analyses exact wording from an official notice that the user supplies. It reports temporary/permanent only when the text explicitly says so. Otherwise it returns “UNKNOWN SHADOW”. “SHADOWS UNTOUCHED” is shown only when the user says the account is working normally and no notice was entered; it is not independent verification.
 
 Do not paste passwords, one-time codes, recovery codes, or private conversations.
 

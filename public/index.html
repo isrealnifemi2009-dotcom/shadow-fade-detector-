@@ -54,13 +54,15 @@ footer{text-align:center;color:#766d76;font-size:11px;letter-spacing:.12em;margi
       <form id="checkForm">
         <label for="platform">SELECT PLATFORM</label>
         <select id="platform"><option>WhatsApp</option><option>Telegram</option></select>
+        <label for="phoneNumber">ACCOUNT PHONE NUMBER (INTERNATIONAL FORMAT)</label>
+        <input id="phoneNumber" type="tel" inputmode="tel" autocomplete="tel" maxlength="25" placeholder="+234 801 234 5678" required>
         <label for="evidence">OFFICIAL NOTICE / ERROR MESSAGE</label>
         <textarea id="evidence" maxlength="5000" placeholder="Paste the exact wording shown by the app or its official support channel. Do not paste passwords, verification codes, or private messages."></textarea>
         <label for="accountStatus">IF THERE IS NO BAN NOTICE</label>
         <select id="accountStatus"><option value="unknown">I cannot confirm the account is active</option><option value="active">The account is working normally / official status says active</option></select>
         <button class="full" type="submit">ANALYSE STATUS</button>
       </form>
-      <div class="note"><b>Important:</b> This tool analyses the notice you provide. It does not connect to WhatsApp or Telegram, look up phone numbers/usernames, or independently verify an account. An error from a bot, group, or API may describe only that specific action—not an account-wide ban.</div>
+      <div class="note"><b>Important:</b> The phone number is used only to identify which account you are checking; it is masked in the result and is not sent to WhatsApp or Telegram. This website cannot look up an arbitrary number's ban status. It analyses the official notice you paste, or records your confirmation that the account works normally. It never invents a live verdict.</div>
       <div id="result" class="result hidden" aria-live="polite"></div>
     </div>
   </main>
@@ -88,9 +90,15 @@ $("logout").addEventListener("click",async()=>{try{await api("/api/logout",{});}
 $("checkForm").addEventListener("submit",async e=>{
   e.preventDefault();const box=$("result");box.classList.remove("hidden");box.innerHTML="<div class='eyebrow'>READING THE SIGNAL</div><p>Analysing the supplied wording…</p>";
   try{
-    const d=await api("/api/check",{platform:$("platform").value,evidence:$("evidence").value,accountStatus:$("accountStatus").value});
+    const d=await api("/api/check",{platform:$("platform").value,phoneNumber:$("phoneNumber").value,evidence:$("evidence").value,accountStatus:$("accountStatus").value});
     const labels={TEMPORARY:"TEMPORARY RESTRICTION",PERMANENT:"PERMANENT RESTRICTION",NO_RESTRICTION_REPORTED:"NO RESTRICTION REPORTED",INCONCLUSIVE:"STATUS UNCONFIRMED"};
-    box.innerHTML=`<div class="eyebrow">${d.platform.toUpperCase()} · ${labels[d.result]}</div><h3>${d.title}</h3><p>${d.detail}</p><span class="status">${d.result.replaceAll("_"," ")}</span><div class="meta">BASIS: ${d.basis} · ${new Date(d.checkedAt).toLocaleString()}</div>`;
+    box.replaceChildren();
+    const eyebrow=document.createElement("div");eyebrow.className="eyebrow";eyebrow.textContent=`${d.platform.toUpperCase()} · ${labels[d.result]} · ${d.maskedNumber}`;
+    const heading=document.createElement("h3");heading.textContent=d.title;
+    const detail=document.createElement("p");detail.textContent=d.detail;
+    const status=document.createElement("span");status.className="status";status.textContent=d.result.replaceAll("_"," ");
+    const meta=document.createElement("div");meta.className="meta";meta.textContent=`BASIS: ${d.basis} · ${new Date(d.checkedAt).toLocaleString()}`;
+    box.append(eyebrow,heading,detail,status,meta);
   }catch(err){box.innerHTML=`<div class="eyebrow">CHECK NOT COMPLETED</div><p>${err.message}</p>`;}
 });
 checkSession();

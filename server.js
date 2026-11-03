@@ -73,20 +73,32 @@ app.get("/api/session", (req, res) => {
 
 app.post("/api/check", requireAuth, (req, res) => {
   const platform = req.body && req.body.platform;
+  const phoneNumber = req.body && req.body.phoneNumber;
   const evidence = req.body && req.body.evidence;
   const accountStatus = req.body && req.body.accountStatus;
 
   if (!["WhatsApp", "Telegram"].includes(platform)) {
     return res.status(400).json({ error: "Choose WhatsApp or Telegram." });
   }
+  if (typeof phoneNumber !== "string") {
+    return res.status(400).json({ error: "Enter the account phone number." });
+  }
+
+  // Validate and immediately mask the number. It is not looked up or stored.
+  const digits = phoneNumber.replace(/\D/g, "");
+  if (digits.length < 7 || digits.length > 15) {
+    return res.status(400).json({ error: "Enter a valid international phone number, including its country code." });
+  }
+  const maskedNumber = `••••••${digits.slice(-4)}`;
+
   if (typeof evidence !== "string" || evidence.length > 5000) {
     return res.status(400).json({ error: "Enter an official notice or error message (maximum 5,000 characters)." });
   }
 
   const text = evidence.toLowerCase();
   let result = "INCONCLUSIVE";
-  let title = "SHADOW VEIL";
-  let detail = "The supplied text does not prove whether this account is temporarily or permanently restricted. Check the app itself or its official support channel.";
+  let title = "UNKNOWN SHADOW";
+  let detail = "There is not enough reliable wording to determine the account's restriction status. The phone number was not queried against WhatsApp or Telegram. Check the account in the official app or its official support channel.";
 
   const permanent = [
     /permanently\s+(banned|disabled|suspended|restricted)/,
@@ -95,30 +107,29 @@ app.post("/api/check", requireAuth, (req, res) => {
   ];
   const temporary = [
     /temporarily\s+(banned|disabled|suspended|restricted)/,
-    /(ban|restriction|suspension)\s+(is\s+)?temporary/,
-    /try\s+again\s+in\s+\d+\s*(minute|hour|day)s?/
+    /(ban|restriction|suspension)\s+(is\s+)?temporary/
   ];
 
   if (permanent.some(re => re.test(text))) {
     result = "PERMANENT";
     title = "SHADOW FALL";
-    detail = "The supplied official wording explicitly describes a permanent restriction. Follow the platform's official appeal or review process if one is offered.";
+    detail = "The supplied text explicitly describes a permanent restriction. This is an interpretation of the notice you pasted, not an independent lookup. Follow the platform's official review or appeal process if offered.";
   } else if (temporary.some(re => re.test(text))) {
     result = "TEMPORARY";
     title = "SHADOW FADE";
-    detail = "The supplied official wording explicitly describes a temporary restriction. Follow the waiting period and instructions shown by the platform.";
-  } else if (accountStatus === "active") {
+    detail = "The supplied text explicitly describes a temporary restriction. This is an interpretation of the notice you pasted, not an independent lookup. Follow the waiting period and instructions shown by the platform.";
+  } else if (!text.trim() && accountStatus === "active") {
     result = "NO_RESTRICTION_REPORTED";
     title = "SHADOWS UNTOUCHED";
-    detail = "You marked the account as active based on an official in-app status or successful normal use. This is not an independent platform verification.";
+    detail = "You confirmed that the account is working normally. This is user-reported information, not an independent platform verification.";
   }
 
   res.json({
-    platform, result, title, detail,
+    platform, maskedNumber, result, title, detail,
     checkedAt: new Date().toISOString(),
     basis: result === "NO_RESTRICTION_REPORTED"
       ? "User-confirmed active status"
-      : (result === "INCONCLUSIVE" ? "No decisive wording found" : "Explicit wording in supplied notice")
+      : (result === "INCONCLUSIVE" ? "No decisive wording found; no live lookup performed" : "Explicit wording in supplied notice")
   });
 });
 
